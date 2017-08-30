@@ -1,18 +1,9 @@
 package kumagai.weight.struts2;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
-import javax.servlet.ServletContext;
-
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
-
-import com.microsoft.sqlserver.jdbc.SQLServerDriver;
+import org.apache.struts2.convention.annotation.Results;
 
 import kumagai.weight.BeforeAfterWeightCollection;
 
@@ -21,41 +12,33 @@ import kumagai.weight.BeforeAfterWeightCollection;
  * @author kumagai
  */
 @Namespace("/weight")
-@Result(name="success", location="/weight/highchartsgraph.jsp")
+@Results
+({
+	@Result(name="success", location="/weight/highchartsgraph.jsp"),
+	@Result(name="error", location="/weight/error.jsp")
+})
 public class HighchartsGraphAction
 {
 	public String chartPoints;
 
-	@Action("highchartsgraph")
+	@Action("highchartsGraph")
 	public String execute()
 		throws Exception
 	{
-		ServletContext context = ServletActionContext.getServletContext();
+		BeforeAfterWeightCollection weights =
+			GraphAction.getBeforeAfterWeightCollection();
 
-		String url = context.getInitParameter("WeightSqlserverUrl");
-		if (url != null)
+		if (weights != null)
 		{
-			// URL定義あり
+			// 取得成功
 
-			DriverManager.registerDriver(new SQLServerDriver());
-
-			Connection connection = DriverManager.getConnection(url);
-			Statement statement = connection.createStatement();
-			ResultSet results = statement.executeQuery("select date, before, after from senseki");
-
-			BeforeAfterWeightCollection weightList = new BeforeAfterWeightCollection(results);
-
-			results.close();
-			statement.close();
-			connection.close();
-
-			chartPoints = weightList.getChartPoints();
+			chartPoints = weights.getChartPoints();
 
 			return "success";
 		}
 		else
 		{
-			// URL定義なし
+			// 取得失敗
 
 			return "error";
 		}

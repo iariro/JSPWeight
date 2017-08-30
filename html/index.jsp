@@ -11,14 +11,14 @@
 
 	<body>
 		<h3>戦績</h3>
-			<s:form action="addSenseki1">
+			<s:form action="addSenseki1" theme="simple">
 				<s:submit value="戦績入力" />
 			</s:form>
-			<s:form action="svggraph" theme="simple">
+			<s:form action="svgGraph" theme="simple">
 				<s:select name="range" list="#{ '200':'200','800':'800','1600':'1600' }"/>
 				<s:submit value="戦績グラフ SVG" />
 			</s:form>
-			<s:form action="highchartsgraph" theme="simple">
+			<s:form action="highchartsGraph" theme="simple">
 				<s:submit value="戦績グラフ Highcharts" />
 			</s:form>
 			<s:form action="listSenseki" theme="simple">
@@ -28,7 +28,7 @@
 		<ul>
 		<li><a href="addmise1.jsp">店追加</a>
 		<li>
-			<s:form action="listMise">
+			<s:form action="listMise" theme="simple">
 				<input type="hidden" name="order" value="name" />
 				<s:submit value="店一覧" />
 			</s:form>

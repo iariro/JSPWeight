@@ -3,29 +3,50 @@ package kumagai.weight.struts2;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
+
+import kumagai.weight.BeforeAfterWeightCollection;
+import kumagai.weight.WeightGraphDocument;
 
 /**
- * 短期グラフ表示アクション。
+ * SVGグラフ表示アクション。
  * @author kumagai
  */
 @Namespace("/weight")
-@Result(name="success", location="/weight/svggraph.jsp")
+@Results
+({
+	@Result(name="success", location="/weight/svggraph.jsp"),
+	@Result(name="error", location="/weight/error.jsp")
+})
 public class SvgGraphAction
-	extends GraphAction
 {
 	public int range;
 
+	public WeightGraphDocument document;
+
 	/**
-	 * 短期グラフ表示アクション。
+	 * SVGグラフ表示アクション。
 	 * @return 処理結果
-	 * @throws Exception
 	 */
-	@Action("graph1")
+	@Action("svgGraph")
 	public String execute()
 		throws Exception
 	{
-		getBeforeAfterWeightCollection(range, 800f / range);
+		BeforeAfterWeightCollection weights =
+			GraphAction.getBeforeAfterWeightCollection();
+		if (weights != null)
+		{
+			// 取得成功
 
-		return "success";
+			document = new WeightGraphDocument(weights, 55, 70, range, 800f / range, 30f);
+
+			return "success";
+		}
+		else
+		{
+			// 取得失敗
+
+			return "error";
+		}
 	}
 }

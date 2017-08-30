@@ -1,12 +1,24 @@
 package kumagai.weight.struts2;
 
-import java.io.*;
-import java.sql.*;
-import javax.servlet.*;
-import javax.xml.transform.*;
-import com.microsoft.sqlserver.jdbc.*;
-import org.apache.struts2.*;
-import kumagai.weight.*;
+import java.io.StringWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.servlet.ServletContext;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+
+import org.apache.struts2.ServletActionContext;
+
+import com.microsoft.sqlserver.jdbc.SQLServerDriver;
+
+import kumagai.weight.BeforeAfterWeightCollection;
+import kumagai.weight.WeightGraphDocument;
 
 /**
  * グラフ表示アクション基底部。
@@ -40,33 +52,35 @@ public abstract class GraphAction
 
 	/**
 	 * グラフ表示用に戦績データを取得する。
-	 * @param dayRange 表示領域横幅（日）
-	 * @param sizewidth 横方向倍率
 	 */
-	protected void getBeforeAfterWeightCollection(int dayRange, float sizewidth)
+	static public BeforeAfterWeightCollection getBeforeAfterWeightCollection()
 		throws Exception
 	{
 		ServletContext context = ServletActionContext.getServletContext();
+		String url = context.getInitParameter("WeightSqlserverUrl");
+		if (url != null)
+		{
+			// URL定義あり
 
-		DriverManager.registerDriver(new SQLServerDriver());
+			DriverManager.registerDriver(new SQLServerDriver());
 
-		Connection connection =
-			DriverManager.getConnection
-				(context.getInitParameter("WeightSqlserverUrl"));
+			Connection connection = DriverManager.getConnection(url);
 
-		Statement statement = connection.createStatement();
+			Statement statement = connection.createStatement();
+			ResultSet results = statement.executeQuery("select date, before, after from senseki");
+			BeforeAfterWeightCollection list = new BeforeAfterWeightCollection(results);
 
-		ResultSet results =
-			statement.executeQuery("select date, before, after from senseki");
+			results.close();
+			statement.close();
+			connection.close();
 
-		BeforeAfterWeightCollection list =
-			new BeforeAfterWeightCollection(results);
+			return list;
+		}
+		else
+		{
+			// URL定義なし
 
-		results.close();
-		statement.close();
-		connection.close();
-
-		document =
-			new WeightGraphDocument(list, 55, 70, dayRange, sizewidth, 30f);
+			return null;
+		}
 	}
 }

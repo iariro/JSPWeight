@@ -20,9 +20,9 @@
 			options =
 			{
 				chart: {renderTo: 'chart', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-				title: {text: 'S.M.A.R.T. - <s:property value='targetName' />'},
+				title: {text: 'Weight graph'},
 				xAxis: {title: null, type: 'datetime'},
-				series: [ <s:property value='chartPointLists' /> ]
+				series: [ <s:property value='chartPoints' /> ]
 			};
 			chart = new Highcharts.Chart(options);
 		};
