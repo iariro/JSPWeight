@@ -13,7 +13,7 @@
 	</head>
 
 	<body>
-		<div id="chart" style="width:1300px; height:700px"></div>
+		<div id="chart" style="width:1300px; height:650px"></div>
 		<script type="text/javascript">
 		function draw()
 		{
