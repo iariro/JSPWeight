@@ -1,16 +1,20 @@
 package kumagai.weight.struts2;
 
-import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
 
 /**
  * 短期グラフ表示アクション。
  * @author kumagai
  */
 @Namespace("/weight")
-@Result(name="success", location="/weight/graph.jsp")
-public class Graph1Action
+@Result(name="success", location="/weight/svggraph.jsp")
+public class SvgGraphAction
 	extends GraphAction
 {
+	public int range;
+
 	/**
 	 * 短期グラフ表示アクション。
 	 * @return 処理結果
@@ -20,7 +24,7 @@ public class Graph1Action
 	public String execute()
 		throws Exception
 	{
-		getBeforeAfterWeightCollection(200, 4);
+		getBeforeAfterWeightCollection(range, 800f / range);
 
 		return "success";
 	}

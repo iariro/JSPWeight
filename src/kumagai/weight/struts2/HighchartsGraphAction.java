@@ -35,6 +35,8 @@ public class HighchartsGraphAction
 		String url = context.getInitParameter("WeightSqlserverUrl");
 		if (url != null)
 		{
+			// URL定義あり
+
 			DriverManager.registerDriver(new SQLServerDriver());
 
 			Connection connection = DriverManager.getConnection(url);
@@ -53,6 +55,8 @@ public class HighchartsGraphAction
 		}
 		else
 		{
+			// URL定義なし
+
 			return "error";
 		}
 	}
