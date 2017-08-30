@@ -11,28 +11,19 @@
 
 	<body>
 		<h3>戦績</h3>
-		<ul>
-			<li>
-				<s:form action="addSenseki1">
-					<s:submit value="戦績入力" />
-				</s:form>
-			<li>
-				<s:form action="graph1">
-					<s:submit value="戦績グラフ200日" />
-				</s:form>
-			<li>
-				<s:form action="graph2">
-					<s:submit value="戦績グラフ800日" />
-				</s:form>
-			<li>
-				<s:form action="graph3">
-					<s:submit value="戦績グラフ1,600日" />
-				</s:form>
-			<li>
-				<s:form action="listSenseki">
-					<s:submit value="戦績一覧" />
-				</s:form>
-		</ul>
+			<s:form action="addSenseki1">
+				<s:submit value="戦績入力" />
+			</s:form>
+			<s:form action="svggraph" theme="simple">
+				<s:select name="range" list="#{ '200':'200','800':'800','1600':'1600' }"/>
+				<s:submit value="戦績グラフ SVG" />
+			</s:form>
+			<s:form action="highchartsgraph" theme="simple">
+				<s:submit value="戦績グラフ Highcharts" />
+			</s:form>
+			<s:form action="listSenseki" theme="simple">
+				<s:submit value="戦績一覧" />
+			</s:form>
 		<h3>店</h3>
 		<ul>
 		<li><a href="addmise1.jsp">店追加</a>

@@ -1,6 +1,8 @@
 package kumagai.weight;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * １戦績情報。
@@ -23,6 +25,19 @@ public class BeforeAfterWeight
 		this.date = result.getDate("date");
 		this.before = result.getFloat("before");
 		this.after = result.getFloat("after");
+	}
+
+	/**
+	 * 指定の値をメンバーに割り当てる
+	 * @param date 日付
+	 * @param before 利用前の値
+	 * @param after 利用後の値
+	 */
+	public BeforeAfterWeight(Date date, float before, float after)
+	{
+		this.date = date;
+		this.before = before;
+		this.after = after;
 	}
 
 	/**
