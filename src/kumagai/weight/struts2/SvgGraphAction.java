@@ -1,5 +1,12 @@
 package kumagai.weight.struts2;
 
+import java.io.StringWriter;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
@@ -23,6 +30,28 @@ public class SvgGraphAction
 	public int range;
 
 	public WeightGraphDocument document;
+
+	/**
+	 * グラフSVGドキュメントを文字列として取得。
+	 * @return 文字列によるグラフSVGドキュメント
+	 */
+	public String getXml()
+		throws TransformerFactoryConfigurationError, TransformerException
+	{
+		// XML書き出し準備。
+		Transformer transformer =
+			TransformerFactory.newInstance().newTransformer();
+		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+		transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+
+		StringWriter writer = new StringWriter();
+
+		// XML書き出し。
+		document.write(transformer, writer);
+
+		return writer.toString();
+	}
 
 	/**
 	 * SVGグラフ表示アクション。
