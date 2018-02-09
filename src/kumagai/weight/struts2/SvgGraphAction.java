@@ -1,6 +1,7 @@
 package kumagai.weight.struts2;
 
 import java.io.StringWriter;
+
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -62,7 +63,7 @@ public class SvgGraphAction
 		throws Exception
 	{
 		BeforeAfterWeightCollection weights =
-			GraphAction.getBeforeAfterWeightCollection();
+			GraphAction.getBeforeAfterWeightCollection(null);
 		if (weights != null)
 		{
 			// 取得成功

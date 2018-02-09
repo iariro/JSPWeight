@@ -19,6 +19,8 @@ import kumagai.weight.BeforeAfterWeightCollection;
 })
 public class HighchartsGraphAction
 {
+	public int range;
+
 	public String chartPoints;
 
 	@Action("highchartsGraph")
@@ -26,7 +28,7 @@ public class HighchartsGraphAction
 		throws Exception
 	{
 		BeforeAfterWeightCollection weights =
-			GraphAction.getBeforeAfterWeightCollection();
+			GraphAction.getBeforeAfterWeightCollection(range);
 
 		if (weights != null)
 		{

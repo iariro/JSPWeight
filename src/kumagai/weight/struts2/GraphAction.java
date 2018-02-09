@@ -2,10 +2,11 @@ package kumagai.weight.struts2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 import javax.servlet.ServletContext;
+
 import org.apache.struts2.ServletActionContext;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
@@ -24,7 +25,7 @@ public abstract class GraphAction
 	/**
 	 * グラフ表示用に戦績データを取得する。
 	 */
-	static public BeforeAfterWeightCollection getBeforeAfterWeightCollection()
+	static public BeforeAfterWeightCollection getBeforeAfterWeightCollection(Integer range)
 		throws Exception
 	{
 		ServletContext context = ServletActionContext.getServletContext();
@@ -37,8 +38,17 @@ public abstract class GraphAction
 
 			Connection connection = DriverManager.getConnection(url);
 
-			Statement statement = connection.createStatement();
-			ResultSet results = statement.executeQuery("select date, before, after from senseki");
+			String sql = "select date, before, after from senseki";
+			if (range != null)
+			{
+				sql += " where datediff(day, date, getdate()) <= ?";
+			}
+			PreparedStatement statement = connection.prepareStatement(sql);
+			if (range != null)
+			{
+				statement.setInt(1, range);
+			}
+			ResultSet results = statement.executeQuery(sql);
 			BeforeAfterWeightCollection list = new BeforeAfterWeightCollection(results);
 
 			results.close();

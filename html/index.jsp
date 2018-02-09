@@ -26,6 +26,7 @@
 			<s:submit value="戦績グラフ SVG" />
 		</s:form>
 		<s:form action="highchartsGraph" theme="simple">
+			<s:select name="range" list="#{ '200':'200','800':'800','1600':'1600' }"/>
 			<s:submit value="戦績グラフ Highcharts" />
 		</s:form>
 		<s:form action="listSenseki" theme="simple">
