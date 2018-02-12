@@ -48,7 +48,7 @@ public abstract class GraphAction
 			{
 				statement.setInt(1, range);
 			}
-			ResultSet results = statement.executeQuery(sql);
+			ResultSet results = statement.executeQuery();
 			BeforeAfterWeightCollection list = new BeforeAfterWeightCollection(results);
 
 			results.close();
